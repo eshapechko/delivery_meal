@@ -1,5 +1,7 @@
 import {
+    modalProduct,
     catalogList,
+    count,
     countAmount,
     modalDelivery,
     modalProductBtn,
@@ -115,8 +117,22 @@ const cartController = () => {
         }
     });
 
+    /*  ==== добавление количества товара в модальном окне ==== */
+    count.addEventListener("click", ({ target }) => {
+        const targetPlus = target.closest(".count__plus");
+        const targetMinus = target.closest(".count__minus");
+        if (targetPlus) {
+            countAmount.textContent = parseInt(countAmount.textContent) + 1;
+        }
+        if (targetMinus && countAmount.textContent > 1) {
+            countAmount.textContent = parseInt(countAmount.textContent) - 1;
+        }
+    });
+
     modalProductBtn.addEventListener("click", () => {
         addCart(modalProductBtn.dataset.idProduct, parseInt(countAmount.textContent));
+        modalProduct.classList.remove("modal_open");
+        countAmount.textContent = 1;
     });
 
     orderList.addEventListener("click", ({ target }) => {

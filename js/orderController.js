@@ -2,7 +2,7 @@ import { clearCart } from "./cart.js";
 import { modalDeliveryForm } from "./elements.js";
 
 export const orderController = (getCart) => {
-    modalDeliveryForm.addEventListener("change", () => {
+    const checkDelivery = () => {
         if (modalDeliveryForm.format.value === "pickup") {
             modalDeliveryForm[`adress-info`].classList.add("modal-delivery__fieldset-input_hide");
         }
@@ -10,7 +10,8 @@ export const orderController = (getCart) => {
         if (modalDeliveryForm.format.value === "delivery") {
             modalDeliveryForm[`adress-info`].classList.remove("modal-delivery__fieldset-input_hide");
         }
-    });
+    };
+    modalDeliveryForm.addEventListener("change", checkDelivery);
 
     modalDeliveryForm.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -19,11 +20,11 @@ export const orderController = (getCart) => {
         const data = Object.fromEntries(formData);
         data.order = getCart();
 
-        fetch("https://reqres.in/api/users", {
+        fetch("https://63895b67c5356b25a2feb4a8.mockapi.io/order", {
             method: "post",
             body: JSON.stringify(data),
         })
             .then((response) => response.json())
-            .then((data) => clearCart(), modalDeliveryForm.reset());
+            .then((data) => clearCart(), modalDeliveryForm.reset(), checkDelivery(), console.log(data));
     });
 };
